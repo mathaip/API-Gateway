@@ -32,7 +32,6 @@ async def get_upload_url(
 ):  
     try:
         service_account = os.environ['Service_Account']
-        #service_account = "service-account.json"
         url = gcs.generate_signed_url(
            service_account,document_type,body.blob_name
         )

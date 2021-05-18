@@ -1,7 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
-#ENV Service_Account="service-account.json"
-
 COPY requirements.txt ./
 COPY service-account.json ./
 
