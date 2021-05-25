@@ -1,5 +1,4 @@
 from app import gcs, schemas
-
 from fastapi import FastAPI, HTTPException, Header, Depends, Request, File, UploadFile, Form
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
@@ -31,9 +30,10 @@ async def get_upload_url(
     body: schemas.UploadRequest 
 ):  
     try:
+        bucket_name = document_type + "_raw"
         service_account = os.environ['Service_Account']
         url = gcs.generate_signed_url(
-           service_account,document_type,body.blob_name
+           service_account,bucket_name,body.blob_name
         )
         return {"signed_url": url}
     except Exception as e:
