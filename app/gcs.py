@@ -6,10 +6,7 @@ import binascii
 import collections
 import hashlib
 import sys
-
-# pip install google-auth
 from google.oauth2 import service_account
-# pip install six
 import six
 from six.moves.urllib.parse import quote
 
