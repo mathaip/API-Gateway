@@ -1,0 +1,89 @@
+swagger: '2.0'
+host: halcyon-api-gateway-bm6h3c7g.uc.gateway.dev
+schemes: 
+    - https
+    - http
+x-google-backend:
+    address: https://api-gateway-tj76tt6qmq-uc.a.run.app
+security:
+    - api_key: []
+produces:
+    - application/json
+info:
+  description: The Halcyon API for document upload via signed url.
+  title: Halcyon API
+  version: 0.0.1
+paths:
+  /document/upload:
+    put:
+      parameters:
+        - in: query
+          name: document_type
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UploadRequest'
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      operationId: get_upload_url_devices_upload_put
+      summary: Get Upload Url
+definitions:
+    UploadRequest:
+      properties:
+        blob_name:
+          title: Blob Name
+          type: string
+        organization:
+          title: organization
+          type: string
+        person:
+          title: person
+          type: string
+      required:
+        - organization
+        - person
+        - blob_name
+      title: UploadRequest
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            type: string
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+        - loc
+        - msga
+        - type
+      title: ValidationError
+      type: object
+    HTTPValidationError: 
+      properties: 
+        detail:
+          items: 
+            $ref: "#/definitions/ValidationError"
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+securityDefinitions:
+    api_key:
+      type: "apiKey"
+      name: "key"
+      in: "query"

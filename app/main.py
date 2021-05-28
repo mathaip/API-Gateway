@@ -7,13 +7,19 @@ import base64
 import json
 from typing import Optional
 import os
+from datetime import date
+
 
 
 app = FastAPI()
 
 origins = [
     "http://localhost",
-    "http://localhost:8080"
+    "http://localhost:8080",
+    'https://halcyon-api-gateway-bm6h3c7g.uc.gateway.dev'
+    'http://halcyon-api-gateway-bm6h3c7g.uc.gateway.dev',
+    'https://api-gateway-tj76tt6qmq-uc.a.run.app',
+    
 ]
 
 app.add_middleware(
@@ -24,16 +30,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.put("/document/upload/")
+@app.put("/document/upload")
 async def get_upload_url(
     document_type: str,
     body: schemas.UploadRequest 
 ):  
     try:
+        today = date.today()
+        currentDate = today.strftime("%d-%m-%Y")
+        organzation = body.organization
+        person = body.person
+        blob_name = body.blob_name
+        document_path = organzation + '/' + person + '/' + currentDate + '/'+ blob_name
         bucket_name = document_type + "_raw"
         service_account = os.environ['Service_Account']
         url = gcs.generate_signed_url(
-           service_account,bucket_name,body.blob_name
+           service_account,bucket_name,document_path
         )
         return {"signed_url": url}
     except Exception as e:

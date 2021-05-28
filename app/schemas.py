@@ -4,3 +4,6 @@ from pydantic import BaseModel
 
 class UploadRequest(BaseModel):
     blob_name: str
+    organization:str
+    person:str
+    
